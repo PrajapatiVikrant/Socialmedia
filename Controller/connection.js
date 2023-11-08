@@ -19,7 +19,7 @@ myrequest:async(req,res)=>{
     let data2 = await userModel.updateOne({email:req.query.from},{$push: {invited:req.query.to}});
     let data3 = await userModel.updateOne({email:req.query.to},{$push: {response:{email:req.query.from,connection:'connecting'}}})
     let data4 = await userModel.updateOne({email:req.query.from},{$push: {response:{email:req.query.to,connection:'connecting'}}})
-    console.log(data3);
+  
   
   
     res.send('connecting');
@@ -29,7 +29,6 @@ myrequest:async(req,res)=>{
 
 //create new connection
 ceateconnection: async(req,res)=>{
-    console.log(req.query)
    
     let freindreq = req.query.freindreq.split(',');
    
@@ -65,6 +64,11 @@ ceateconnection: async(req,res)=>{
   
   res.send('success')
   },
+  showconnection:(req,res)=>{
+    res.json({
+      connected: req.body.connected,
+    })
+  }
   
   
 

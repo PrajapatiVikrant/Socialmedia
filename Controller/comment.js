@@ -11,7 +11,6 @@ app.use(bodyParser.json());
 const comment = {
     addcomment:async (req,res)=>{
         let data = await userModel.findOne({email:req.query.postemail});
-        console.log(req.query);
         let add  = data.post.filter((elem,ind)=>{
           if(elem.name === req.query.postname){
                         
@@ -20,7 +19,7 @@ const comment = {
           return elem
         })
         const adddata = await userModel.updateOne({email:req.query.postemail},{post:add})
-        console.log(adddata)
+        
         res.send('ok')
     
       },
@@ -28,7 +27,7 @@ const comment = {
       showcomment:async (req,res)=>{
         let data = await userModel.findOne({email:req.query.postemail});
            data.post.filter((elem,ind)=>{
-            console.log(elem.name)
+        
           if(elem.name === req.query.postname){
             
             res.send(elem.comment);

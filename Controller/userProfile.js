@@ -9,8 +9,9 @@ app.use(bodyParser.json());
 
 const allprofile = {
     visit:async(req,res)=>{
-
-        let data = await userModel.updateOne({email:req.query.email},{visit:req.query.visit})
+         const data = await userModel.findOne({email:req.query.visit});
+         await userModel.updateOne({email:req.query.email},{visit:req.query.visit})
+         await userModel.updateOne({email:req.query.visit},{views:parseInt(data.views)+1})
         res.send('success')
       },
 
@@ -30,7 +31,7 @@ showvisitprofile:async(req,res)=>{
         discription:outsider.discription,
         post:outsider.post,
         connectionRes:'connect',
-        connection:'4',
+        connection:outsider.connected.length,
        
       })
     }else{
@@ -42,7 +43,7 @@ showvisitprofile:async(req,res)=>{
         discription:outsider.discription,
         post:outsider.post,
         connectionRes:responsedata[0].connection,
-        connection:'4',
+        connection:outsider.connected.length,
        
       })
     }
@@ -55,6 +56,20 @@ showvisitprofile:async(req,res)=>{
     }
     
     
+  },
+  getprofiledata:(req,res)=>{
+    res.json({
+      name: req.body.username,
+      email: req.body.email,
+      views: req.body.views,
+      followers: req.body.followers,
+      post: req.body.post,
+      discription: req.body.discription,
+      visit: req.body.visit,
+      request: req.body.request,
+      invited: req.body.invited,
+      connected: req.body.connected,
+    });
   }
 }
 

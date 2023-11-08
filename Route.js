@@ -23,29 +23,29 @@ app.use(bodyParser.json())
 app.use(express.json());
 let e;
 
-router.get('/uploadpost',middleware.verifyJWT);
-router.post('/userpost',middleware.postUpload);
-router.post('/setimage',middleware.upload);
-router.get('/',middleware.verifyJWT)
+
+router.post('/userpost',middleware.verifyJWT,post.postUpload);
+router.post('/setimage',middleware.verifyJWT,post.upload);
+router.get('/',middleware.verifyJWT,userprofile.getprofiledata)
 router.post('/login',auth.login)
 router.post('/signup',auth.signup);
 router.get('/showpost/:name/:email',post.showpost)
-router.get('/showotherprofile',middleware.verifyJWT)
-router.get('/getpost',middleware.verifyJWT);
+router.get('/showotherprofile',middleware.verifyJWT,userprofile.getprofiledata)
+router.get('/getpost',middleware.verifyJWT,post.getpost);
 router.post('/visit',userprofile.visit)
 router.get('/showvisitprofile/:profile/:email',userprofile.showvisitprofile)
 router.put('/myrequest',connection.myrequest)
 router.post('/ceateconnection',connection.ceateconnection)
-router.get('/showconnection',middleware.verifyJWT)
+router.get('/showconnection',middleware.verifyJWT,connection.showconnection)
 router.post('/sendmessage',message.sendmessage)
 router.get('/getmessage/:from/:to',message.getmessage)
-router.get('/myprofile',middleware.verifyJWT)
+router.get('/myprofile',middleware.verifyJWT,userprofile.getprofiledata)
 
 router.post('/increaselike',like.increaselike)
 router.post('/decreaselike',like.decreaselike)
 router.post('/showcomment',comment.showcomment)
 router.post('/addcomment',comment.addcomment)
-
+router.delete('/deletepost',post.deletepost)
 router.delete('/delete',async(req,res)=>{
    let data = await userModel.deleteOne({email:req.query.email});
    console.log(data);

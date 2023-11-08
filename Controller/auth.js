@@ -19,7 +19,7 @@ const auth = {
       let data = await userModel.findOne({ email: req.query.email });
       if (!data) {
         const passwordhash = await bcrypt.hash(req.query.password, 10);
-        fs.mkdirSync(req.query.email);
+        fs.mkdirSync(`PostFolder/${req.query.email}`);
         let data = new userModel({username:req.query.name,email:req.query.email,password:passwordhash,views:'15',followers:'5',discription:req.query.discription,visit:req.query.visit})
         const result = await data.save();
         return res.send('success');

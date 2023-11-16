@@ -6,6 +6,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  url:{
+    type:String,
+    required:true,
+  },
   email:{
     type:String,
     required:true,
@@ -60,5 +64,4 @@ const userSchema = new mongoose.Schema({
 });
 
 const userModel = mongoose.model('profile', userSchema);
-
 module.exports = userModel;

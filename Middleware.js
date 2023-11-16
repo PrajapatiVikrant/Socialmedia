@@ -19,7 +19,7 @@ const middleware = {
     } else {
       jwt.verify(token, "Coding-learner9580", async (err, decoded) => {
         if (err) {
-          // console.log(err);
+         
           res.json({ name: "Not login" });
         } else {
           let mydata = await userModel.findOne({ email: decoded.email });
@@ -29,48 +29,6 @@ const middleware = {
       });
     }
   },
-  upload: multer({
-    storage: multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, "asset");
-      },
-      filename: function (req, file, cb) {
-        cb(
-          null,
-          file.fieldname +
-            "-" +
-            req.query.email +
-            path.extname(file.originalname)
-        );
-       
-      },
-    }),
-  }).single("userfile"),
-
-  postUpload: multer({
-    storage: multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, req.query.email);
-      },
-      filename: async function (req, file, cb) {
-        let r = Math.random();
-        cb(null, file.fieldname + "-" + r + path.extname(file.originalname));
-        await userModel.updateOne(
-          { email: req.query.email },
-          {
-            $push: {
-              post: {
-                name: "Post-" + r + path.extname(file.originalname),
-                post: req.query.discription,
-                like: 0,
-                liked: [],
-                comment: [],
-              },
-            },
-          }
-        );
-      },
-    }),
-  }).single("Post"),
+  
 };
 module.exports = middleware;

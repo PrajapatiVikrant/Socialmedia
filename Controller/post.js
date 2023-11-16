@@ -1,51 +1,36 @@
 const express = require("express");
-const fs = require("fs");
 const bodyParser = require("body-parser");
 const userModel = require("../models/profile");
-const multer = require("multer");
-const cors = require("cors");
+const Cloudinary = require("cloudinary").v2;
 const app = express();
-app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+Cloudinary.config({
+  cloud_name: "dgedzilok",
+  api_key: "654929448899584",
+  api_secret: "2szXIiHLrAuTmzU0T6B5B6yx-iw",
+});
+
 const post = {
-  showpost: (req, res) => {
-    res.sendFile(
-      "/config/workspace/" + req.params.email + "/" + req.params.name
-    );
-  },
-  upload: multer({
-    storage: multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, "asset");
-      },
-      filename: function (req, file, cb) {
-        cb(
-          null,
-          file.fieldname +
-            "-" +
-            req.query.email +
-            path.extname(file.originalname)
-        );
+  
+ 
+  
+  postUpload: async (req, res) => {
+    const file = req.files.Post;
     
-      },
-    }),
-  }).single("userfile"),
-  postUpload: multer({
-    storage: multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, req.query.email);
-      },
-      filename: async function (req, file, cb) {
-        let r = Math.random();
-        cb(null, file.fieldname + "-" + r + path.extname(file.originalname));
+    Cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+       
         await userModel.updateOne(
           { email: req.query.email },
           {
             $push: {
               post: {
-                name: "Post-" + r + path.extname(file.originalname),
+                name: result.url,
                 post: req.query.discription,
                 like: 0,
                 liked: [],
@@ -54,19 +39,22 @@ const post = {
             },
           }
         );
-      },
-    }),
-  }).single("Post"),
-  getpost:(req,res)=>{
+      }
+    });
+  },
+  getpost: (req, res) => {
     res.json({
-        name: req.body.username,
-        email: req.body.email,
-        post: req.body.post,
-      }); 
+      name: req.body.username,
+      email: req.body.email,
+      post: req.body.post,
+    });
   },
 
   deletepost: async (req, res) => {
-    console.log(req.query.email + "\n" + req.query.postname);
+    const urlArray = req.query.postname.split("/");
+    const image = urlArray[urlArray.length - 1];
+    const ImageName = image.split(".")[0];
+
     const data = await userModel.findOne({ email: req.query.email });
     const updatedpost = data.post.filter((elem, ind) => {
       return elem.name !== req.query.postname;
@@ -75,7 +63,12 @@ const post = {
       { email: req.query.email },
       { post: updatedpost }
     );
-    fs.unlinkSync(`${req.query.email}/${req.query.postname}`);
+    
+    Cloudinary.uploader.destroy(ImageName, (err, result) => {
+      if (err) {
+        console.log(err);
+      } 
+    });
     res.send("Post has deleted");
   },
 };

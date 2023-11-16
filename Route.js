@@ -25,11 +25,10 @@ let e;
 
 
 router.post('/userpost',middleware.verifyJWT,post.postUpload);
-router.post('/setimage',middleware.verifyJWT,post.upload);
+router.post('/setimage',middleware.verifyJWT,userprofile.uploadPhoto);
 router.get('/',middleware.verifyJWT,userprofile.getprofiledata)
 router.post('/login',auth.login)
 router.post('/signup',auth.signup);
-router.get('/showpost/:name/:email',post.showpost)
 router.get('/showotherprofile',middleware.verifyJWT,userprofile.getprofiledata)
 router.get('/getpost',middleware.verifyJWT,post.getpost);
 router.post('/visit',userprofile.visit)

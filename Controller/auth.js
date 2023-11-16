@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const userModel = require("../models/profile");
 const cors = require("cors");
-const fs = require('fs');
 const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -16,19 +15,20 @@ const auth = {
      //sign up api
   signup: async function (req, res) {
      try {
+      
       let data = await userModel.findOne({ email: req.query.email });
       if (!data) {
         const passwordhash = await bcrypt.hash(req.query.password, 10);
-        fs.mkdirSync(`PostFolder/${req.query.email}`);
-        let data = new userModel({username:req.query.name,email:req.query.email,password:passwordhash,views:'15',followers:'5',discription:req.query.discription,visit:req.query.visit})
+        const Imageurl = "Empty";
+        let data = new userModel({username:req.query.name,url:Imageurl,email:req.query.email,password:passwordhash,views:'15',followers:'5',discription:req.query.discription,visit:req.query.visit})
         const result = await data.save();
         return res.send('success');
       } else {
         return res.send("user already exist");
       }
      } catch (error) {
-        res.send(error);
-     
+      console.log(error)
+        res.sendStatus(500);
      }
   
   },

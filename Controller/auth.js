@@ -27,7 +27,8 @@ const auth = {
         return res.send("user already exist");
       }
      } catch (error) {
-      res.send(error)
+      console.log(error)
+        res.sendStatus(500);
      }
   
   },

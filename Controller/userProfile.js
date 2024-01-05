@@ -59,6 +59,7 @@ showvisitprofile:async(req,res)=>{
      
       res.json({
         name:outsider.username,
+        url:outsider.url,
         email:outsider.email,
         followers:outsider.followers,
         discription:outsider.discription,
@@ -71,6 +72,7 @@ showvisitprofile:async(req,res)=>{
     
       res.json({
         name:outsider.username,
+        url:outsider.url,
         email:outsider.email,
         followers:outsider.followers,
         discription:outsider.discription,
@@ -89,6 +91,15 @@ showvisitprofile:async(req,res)=>{
     }
     
     
+  },
+  profileimage:async(req,res)=>{
+    try {
+      const data = await userModel.findOne({email:req.params.email})
+      res.send(data.url);
+    } catch (error) {
+      console.log(error)
+    }
+      
   },
   getprofiledata:(req,res)=>{
     res.json({

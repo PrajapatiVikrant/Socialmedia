@@ -1,8 +1,4 @@
 const express = require('express');
-var bodyParser = require('body-parser')
-const cors = require('cors');
-require('./Config/mydb')
-const userModel = require('./models/profile');
 const middleware = require('./Middleware')
 const app = express();
 const router = express.Router();
@@ -16,12 +12,6 @@ const like  = require('./Controller/like');
 const message = require('./Controller/message');
 const post = require("./Controller/post");
 const userprofile = require("./Controller/userProfile")
-
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
-app.use(express.json());
-let e;
 
 
 router.post('/userpost',middleware.verifyJWT,post.postUpload);
@@ -39,6 +29,7 @@ router.get('/showconnection',middleware.verifyJWT,connection.showconnection)
 router.post('/sendmessage',message.sendmessage)
 router.get('/getmessage/:from/:to',message.getmessage)
 router.get('/myprofile',middleware.verifyJWT,userprofile.getprofiledata)
+router.get('/myimage/:email',userprofile.profileimage)
 
 router.post('/increaselike',like.increaselike)
 router.post('/decreaselike',like.decreaselike)
@@ -64,10 +55,6 @@ router.get('/users', async (req, res) => {
 
 
 
-router.get('/myimage/:email',(req,res)=>{
-  
-  res.sendFile('/config/workspace/asset/userfile'+'-'+req.params.email+'.png')
 
-})
 
 module.exports = router;

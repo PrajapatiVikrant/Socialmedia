@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("./Config/mydb");
 const fileupload = require('express-fileupload');
+const userModel = require("./models/profile");
 const cors = require("cors");
 const app = express();
 app.use(fileupload({

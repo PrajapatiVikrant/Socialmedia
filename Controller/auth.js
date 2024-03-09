@@ -15,7 +15,7 @@ const auth = {
      //sign up api
   signup: async function (req, res) {
      try {
-      
+      console.log("Hello world");
       let data = await userModel.findOne({ email: req.query.email });
       if (!data) {
         const passwordhash = await bcrypt.hash(req.query.password, 10);

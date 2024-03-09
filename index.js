@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 require("./Config/mydb");
 const fileupload = require('express-fileupload');
 const cors = require("cors");

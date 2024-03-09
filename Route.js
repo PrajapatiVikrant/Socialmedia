@@ -3,7 +3,8 @@ const middleware = require('./Middleware')
 const app = express();
 const router = express.Router();
 
-
+console.log("I am router file");
+            
 //import all api
 const auth = require('./Controller/auth');
 const comment = require('./Controller/comment');

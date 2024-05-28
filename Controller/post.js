@@ -19,7 +19,7 @@ const post = {
   
   postUpload: async (req, res) => {
     const file = req.files.Post;
-    
+     console.log('hello worldflsjfjfsdfjdsf');
     Cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
       if (err) {
         console.log(err);

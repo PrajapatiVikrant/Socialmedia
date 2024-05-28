@@ -41,6 +41,9 @@ const post = {
         );
       }
     });
+    res.json({
+      message:"upload successfully",
+    })
   },
   getpost: (req, res) => {
     res.json({

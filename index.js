@@ -6,7 +6,8 @@ const userModel = require("./models/profile");
 const cors = require("cors");
 const app = express();
 app.use(fileupload({
-    useTempFiles:true
+     useTempFiles : true,
+    tempFileDir : '/tmp/'
 }))
 app.use(cors());
 
